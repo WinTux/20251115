@@ -22,7 +22,7 @@ resource "aws_instance" "mi_app_spring" {
   instance_type = "t3.micro"
   subnet_id = module.vpc.public_subnets[0]
   vpc_security_group_ids = [module.security-group.security_group_id]
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   key_name = local.nombre_key
   tags = {
     Name    = format("%s-%s",local.nombre_workspace,count.index)
