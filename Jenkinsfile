@@ -43,25 +43,6 @@ pipeline {
         '''
       }
     }
-    stage('Ejecución de Terraform init, plan, Apply') {
-      steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'],file(credentialsId: 'clasesdevops-pem', variable:'AWS_KEY_FILE')]) {
-          sh """
-          terraform init
-          terraform validate
-          terraform plan -var="ruta_private_key=${AWS_KEY_FILE}" -var="active_color=${params.COLOR}" -out=tfplan
-          terraform apply -auto-approve tfplan
-          """
-        }
-      }
-    }
-    stage('Deploy usando Ansible') {
-      steps {
-        sh '''
-        ansible-playbook -i inventory main.yml
-        '''
-      }
-    }
     stage('Terraform destroy') {
       steps {
         input message: "Voy a detener Terraform ¿deseas ejecutar Terraform destroy?"
