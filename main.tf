@@ -66,7 +66,6 @@ resource "aws_lb_target_group" "blue" {
     path = "/actuator/health"
   }
 }
-
 resource "aws_lb_target_group" "green" {
   name     = "spring-green"
   port     = 8080
@@ -80,7 +79,6 @@ resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.spring_alb.arn
   port              = 80
   protocol          = "HTTP"
-
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.blue.arn
@@ -91,11 +89,7 @@ resource "aws_lb_target_group_attachment" "attach" {
     for idx, instance in aws_instance.mi_app_spring :
     idx => instance.id
   }
-
-  target_group_arn = var.active_color == "blue" ?
-                     aws_lb_target_group.blue.arn :
-                     aws_lb_target_group.green.arn
-
+  target_group_arn = var.active_color == "blue" ? aws_lb_target_group.blue.arn : aws_lb_target_group.green.arn
   target_id = each.value
   port      = 8080
 }
