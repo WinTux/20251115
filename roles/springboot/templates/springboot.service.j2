@@ -1,0 +1,16 @@
+[Unit]
+Description=Aplicación Spring Boot: {{ app_name }}
+After=network.target
+
+[Service]
+User={{ app_user }}
+WorkingDirectory={{ app_dir }}
+ExecStart=/usr/bin/java -jar {{ app_dir }}/{{ jar_file }}
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+StandardOutput=file:/var/log/springboot.log
+StandardError=file:/var/log/springboot-error.log
+
+[Install]
+WantedBy=multi-user.target
