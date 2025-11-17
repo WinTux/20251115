@@ -50,7 +50,7 @@ pipeline {
           terraform init
           terraform validate
           terraform plan -var="ruta_private_key=${AWS_KEY_FILE}" -out=tfplan
-          terraform apply -auto-approve tfplan -var="active_color=${params.COLOR}"
+          terraform apply -var="active_color=${params.COLOR}" -auto-approve tfplan
           """
         }
       }
