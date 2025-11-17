@@ -46,12 +46,12 @@ pipeline {
     stage('Ejecución de Terraform init, plan, Apply') {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'],file(credentialsId: 'clasesdevops-pem', variable:'AWS_KEY_FILE')]) {
-          sh '''
+          sh """
           terraform init
           terraform validate
           terraform plan -var="ruta_private_key=${AWS_KEY_FILE}" -out=tfplan
           terraform apply -auto-approve tfplan -var="active_color=${params.COLOR}"
-          '''
+          """
         }
       }
     }
